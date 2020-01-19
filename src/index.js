@@ -1,12 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+import Navigation from './components/navbar';
+import IndexPage from './pages/index';
+import ViewPage from './pages/view';
+import YearPage from './pages/year';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+class App extends React.Component {
+
+  render() {
+    return (
+      <Router>
+        <Navigation/>
+        <Switch>
+          <Route path="/view/:id" component={ViewPage} />
+          <Route path="/year/:year" component={YearPage} />
+          <Route path="/" component={IndexPage} />
+        </Switch>
+      </Router>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
