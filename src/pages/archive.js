@@ -1,14 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
-
 import axios from 'axios';
 
-import { Container, Card, Divider, Button, Dropdown, Image, Icon } from 'semantic-ui-react';
+import { Container, Card, Divider } from 'semantic-ui-react';
 
-import DB from '../db';
 import { Tags, MonthOrdinals } from '../data';
 import { transformPhotos, groupPhotosByDay } from '../photos';
 import ThumbnailCard from '../components/thumbnailcard';
@@ -43,8 +39,6 @@ export default function(props) {
     }
     getData();
   }, [
-    props.match.params.year,
-    props.match.params.month
   ]);
 
   let content;

@@ -27,7 +27,7 @@ export default function() {
   }
 
   if (photo.MIMEType.startsWith('image/')) {
-    media = <img src={photo.SourceHttp} width="100%" height="100%"/>
+    media = <img src={photo.SourceHttp} width="100%" height="100%" alt={photo.CreateDate}/>
   }
   else {
     media = <ReactPlayer playing

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-import { Menu, Dropdown, Icon, Label } from 'semantic-ui-react';
+import { Menu, Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-import { Years, Months, Tags } from '../data';
+import { Months } from '../data';
 
 export default function(props) {
 
@@ -31,7 +31,7 @@ export default function(props) {
         year = parseInt(year);
         month = parseInt(month);
 
-        if (grouped[year] == undefined) {
+        if (grouped[year] === undefined) {
           grouped[year] = {};
         }
 
@@ -58,8 +58,6 @@ export default function(props) {
           />
         );
       });
-
-      const photos_in_year = Object.values(dates[year]).reduce((a, b) => a + b);
 
       return (
         <Dropdown item text={`${year}`}>

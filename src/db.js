@@ -1,5 +1,8 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
+
+import { Months } from './data';
+
 PouchDB.plugin(PouchDBFind);
 
 const home = '/home/daniel/Camera';
@@ -9,12 +12,6 @@ export default class {
 
   constructor(name) {
     this.db = new PouchDB(name);
-
-    /*
-    this.db.createIndex({
-      index: { fields: ['CreateDate'] }
-    });
-    */
   }
 
   _transform(doc) {
@@ -37,19 +34,44 @@ export default class {
     return photos
   }
 
-  async getPhotosByYear(year) {
+  async _getPhotosByCreateDateMatch(regex, { limit=1000 } ) {
     const query = {
       selector: {
         CreateDate: {
-          '$regex': `${year}`
+          '$regex': `${regex}`
         }
       },
-      limit: 100
+      limit: limit
     };
     const results = await this.db.find(query);
     const docs = results.docs;
     const photos = docs.map(this._transform);
     return this._groupPhotos(photos);
+  }
+
+  async getPhotosByYear(year) {
+    return this._getPhotosByCreateDateMatch(year, { limit: 1000 });
+  }
+
+  async getPhotosByYearMonth(year, month) {
+    const months = {
+      January: '01',
+      February: '02',
+      March: '03',
+      April: '04',
+      May: '05',
+      June: '06',
+      July: '07',
+      August: '08',
+      September: '09',
+      October: '10',
+      November: '11',
+      December: '12'
+    };
+
+    month = months[month];
+
+    return this._getPhotosByCreateDateMatch(`${year}:${month}`, { limit: 1000 })
   }
 
   _groupPhotos(photos) {
