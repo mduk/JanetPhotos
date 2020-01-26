@@ -1,37 +1,83 @@
 import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useState, useEffect } from 'react';
 
-export default class extends React.Component {
-  render() {
-    return (
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#/">Janet Photos</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <NavDropdown title="By Year" id="year-nav-dropdown">
-              <NavDropdown.Item href="#/year/0000">0000</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2004">2004</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2013">2013</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2014">2014</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2015">2015</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2016">2016</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2017">2017</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2018">2018</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2019">2019</NavDropdown.Item>
-              <NavDropdown.Item href="#/year/2020">2020</NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="By Tag" id="tag-nav-dropdown">
-              <NavDropdown.Item href="#/tag/Dougie">Dougie</NavDropdown.Item>
-              <NavDropdown.Item href="#/tag/LaiLai">LaiLai</NavDropdown.Item>
-              <NavDropdown.Item href="#/tag/Garden">Garden</NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="#/untagged">Untagged</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    )
+import { Menu, Dropdown, Icon, Label } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+
+import axios from 'axios';
+
+import { Years, Months, Tags } from '../data';
+
+export default function(props) {
+
+  const [ dates, setDates ] = useState(undefined);
+
+  useEffect(() => {
+    async function getData() {
+      const response = await axios({
+        method: 'get',
+        url: "http://localhost:5984/camera/_design/byYearMonth/_view/photo-counts",
+        params: {
+          reduce: true,
+          group: true,
+        }
+      });
+      const rows = response.data.rows;
+
+      const grouped = {};
+      for (let i in rows) {
+        const { key, value } = rows[i];
+        let [ year, month ] = key;
+        year = parseInt(year);
+        month = parseInt(month);
+
+        if (grouped[year] == undefined) {
+          grouped[year] = {};
+        }
+
+        grouped[year][Months[month--]] = value;
+      }
+
+      setDates(grouped);
+    }
+    getData();
+  });
+
+  let year_items = []
+  if (dates) {
+    year_items = Object.keys(dates).map(year => {
+
+      const month_items = Object.keys(dates[year]).map(month => {
+        const photos_in_month = dates[year][month];
+        return (
+          <Dropdown.Item
+            as={Link}
+            to={`/archive/${year}/${month}`}
+            text={`${month} ${year} (${photos_in_month})`}
+            icon='calendar'
+          />
+        );
+      });
+
+      const photos_in_year = Object.values(dates[year]).reduce((a, b) => a + b);
+
+      return (
+        <Dropdown item text={`${year}`}>
+          <Dropdown.Menu>{month_items}</Dropdown.Menu>
+        </Dropdown>
+      );
+
+    });
   }
+
+  return (
+    <Menu>
+      <Menu.Item header>Janet Photos</Menu.Item>
+
+      <Dropdown item text='Archive'>
+        <Dropdown.Menu>{year_items}</Dropdown.Menu>
+      </Dropdown>
+
+    </Menu>
+  );
 }
