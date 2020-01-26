@@ -10,9 +10,9 @@ import {
 import Navigation from './components/navbar';
 import IndexPage from './pages/index';
 import ViewPage from './pages/view';
-import YearPage from './pages/year';
+import ArchivePage from './pages/archive';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'semantic-ui-css/semantic.min.css'
 
 class App extends React.Component {
 
@@ -22,7 +22,7 @@ class App extends React.Component {
         <Navigation/>
         <Switch>
           <Route path="/view/:id" component={ViewPage} />
-          <Route path="/year/:year" component={YearPage} />
+          <Route path="/archive/:year/:month?" component={ArchivePage} />
           <Route path="/" component={IndexPage} />
         </Switch>
       </Router>
