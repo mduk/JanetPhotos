@@ -2,10 +2,9 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import ReactPlayer from 'react-player';
-import Table from 'react-bootstrap/Table';
+import { Table } from 'semantic-ui-react';
 
 import useDatabase from '../hooks/useDatabase'
-
 
 export default function() {
   const { id } = useParams();
@@ -41,17 +40,17 @@ export default function() {
   }
 
   const metadata = Object.keys(photo).map(k => (
-    <tr>
-      <th>{k}</th>
-      <td>{photo[k]}</td>
-    </tr>
+    <Table.Row>
+      <Table.Cell>{k}</Table.Cell>
+      <Table.Cell>{photo[k]}</Table.Cell>
+    </Table.Row>
   ));
 
   return (
     <>
       {media}
-      <Table striped>
-        <tbody>{metadata}</tbody>
+      <Table striped definition compact>
+        <Table.Body>{metadata}</Table.Body>
       </Table>
     </>
   );
