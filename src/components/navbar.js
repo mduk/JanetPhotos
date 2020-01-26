@@ -41,7 +41,7 @@ export default function(props) {
       setDates(grouped);
     }
     getData();
-  });
+  }, [] );
 
   let year_items = []
   if (dates) {
