@@ -2,6 +2,7 @@ import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 
 import { Months } from './data';
+import { transformPhotos } from './photos';
 
 PouchDB.plugin(PouchDBFind);
 
@@ -14,23 +15,15 @@ export default class {
     this.db = new PouchDB(name);
   }
 
-  _transform(doc) {
-    return {
-      ...doc,
-      SourceHttp: (doc.SourceFile) ? doc.SourceFile.replace(home, http) : '',
-      ThumbHttp: (doc.ThumbFile) ? doc.ThumbFile.replace(home, http) : '',
-    };
-  }
-
   async getPhotoById(id) {
     const doc = await this.db.get(id);
-    return this._transform(doc);
+    return transformPhotos(doc);
   }
 
   async getAllPhotos() {
     const results = await this.db.allDocs({include_docs: true});
     const docs = results.rows.map(result => result.doc);
-    const photos = docs.map(this._transform);
+    const photos = docs.map(transformPhotos);
     return photos
   }
 
@@ -45,7 +38,7 @@ export default class {
     };
     const results = await this.db.find(query);
     const docs = results.docs;
-    const photos = docs.map(this._transform);
+    const photos = docs.map(transformPhotos);
     return this._groupPhotos(photos);
   }
 
