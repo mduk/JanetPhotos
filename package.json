@@ -14,13 +14,13 @@
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-image-lightbox": "^5.1.1",
-    "react-player": "^1.14.2",
+    "react-player": "^1.15.1",
     "react-pouchdb": "^2.0.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
-    "simple-react-lightbox": "^2.0.5"
+    "simple-react-lightbox": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
