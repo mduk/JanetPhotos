@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-import { Months } from '../data';
+import { Months, DatabaseHost } from '../data';
 
 export default function(props) {
 
@@ -16,7 +16,7 @@ export default function(props) {
     async function getData() {
       const response = await axios({
         method: 'get',
-        url: "http://localhost:5984/camera/_design/byYearMonth/_view/photo-counts",
+        url: `${DatabaseHost}/camera/_design/byYearMonth/_view/photo-counts`,
         params: {
           reduce: true,
           group: true,

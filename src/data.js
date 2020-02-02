@@ -1,3 +1,4 @@
+export const DatabaseHost = 'http://127.0.0.1:5984';
 export const ApplicationHost = 'http://127.0.0.1:3000';
 export const ImagesHost = 'http://127.0.0.1:82';
 export const ImagesPath = '/home/daniel/Camera';
