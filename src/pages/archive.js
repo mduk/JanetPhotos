@@ -39,6 +39,7 @@ export default function(props) {
     }
     getData();
   }, [
+    year, month
   ]);
 
   let content;
@@ -65,6 +66,9 @@ export default function(props) {
   return (
     <Container fluid>
       {content}
+      <pre>
+this:
+{JSON.stringify({ year, month, photos }, null, 2)}</pre>
     </Container>
   );
 }
