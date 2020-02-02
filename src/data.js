@@ -1,3 +1,7 @@
+export const ApplicationHost = 'http://localhost:3000';
+export const ImagesHost = 'http://localhost:82';
+export const ImagesPath = '/home/daniel/Camera';
+
 export const Years = [
   2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
 ];

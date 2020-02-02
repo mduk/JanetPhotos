@@ -1,11 +1,13 @@
-const home = '/home/daniel/Camera';
-const http = 'http://localhost:81';
+import {
+  ImagesHost,
+  ImagesPath
+} from './data';
 
 export function transformPhotos(doc) {
   return {
     ...doc,
-    SourceHttp: (doc.SourceFile) ? doc.SourceFile.replace(home, http) : '',
-    ThumbHttp: (doc.ThumbFile) ? doc.ThumbFile.replace(home, http) : '',
+    SourceHttp: (doc.SourceFile) ? doc.SourceFile.replace(ImagesPath, ImagesHost) : '',
+    ThumbHttp: (doc.ThumbFile) ? doc.ThumbFile.replace(ImagesPath, ImagesHost) : '',
   };
 }
 
