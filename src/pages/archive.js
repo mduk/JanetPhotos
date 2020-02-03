@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { Container, Card, Divider } from 'semantic-ui-react';
 
-import { DatabaseHost, Tags, MonthOrdinals } from '../data';
+import { DatabaseHost, MonthOrdinals } from '../data';
 import { transformPhotos, groupPhotosByDay } from '../photos';
 import ThumbnailCard from '../components/thumbnailcard';
 
@@ -13,23 +13,24 @@ export default function(props) {
   const { match: { params: { year, month } } } = props;
   const [ days, setDays ] = useState([]);
 
-  const fromDate = [parseInt(year), MonthOrdinals[month], 0];
-  const   toDate = [parseInt(year), MonthOrdinals[month], 32];
+  const fromDate = [parseInt(year), MonthOrdinals[month]];
 
   useEffect(() => {
     async function getData() {
-      const dburl = `${DatabaseHost}/camera/_design/byYearMonth/_view/by-create-date`;
-      const response = await axios({
+      const request = {
         method: 'get',
-        url: dburl,
+        url: `${DatabaseHost}/camera/_design/byYearMonth/_view/photo-counts`,
         params: {
-          start_key: JSON.stringify(fromDate),
-          end_key: JSON.stringify(toDate)
+          key: JSON.stringify(fromDate),
+          reduce: false
         }
-      });
+      };
+      const response = await axios(request);
       setDays(groupPhotosByDay(
         response.data.rows
-          .map(r => r.value)
+          .map(({id, key, value}) => {
+            return { id, ...value };
+          })
           .map(transformPhotos)
       ));
     }
@@ -39,6 +40,7 @@ export default function(props) {
   ]);
 
   let content;
+  console.log(days);
 
   if (days.length > 0) {
     content = days.map(({ date, count, photos }) => {

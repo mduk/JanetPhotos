@@ -3,18 +3,23 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import ReactPlayer from 'react-player';
 import { Table } from 'semantic-ui-react';
+import axios from 'axios';
 
-import useDatabase from '../hooks/useDatabase'
+import { DatabaseHost } from '../data';
+import { transformPhotos, groupPhotosByDay } from '../photos';
 
 export default function() {
   const { id } = useParams();
-  const db = useDatabase();
 
   const [ photo, setPhoto ] = useState(null);
   useEffect(() => {
     async function getPhoto() {
-      const photo = await db.getPhotoById(id);
-      setPhoto(photo);
+      const request = {
+        method: 'get',
+        url: `${DatabaseHost}/camera/${id}`,
+      };
+      const response = await axios(request);
+      setPhoto(transformPhotos(response.data));
     }
     getPhoto();
   });

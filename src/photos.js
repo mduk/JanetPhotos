@@ -5,6 +5,7 @@ import {
 
 export function transformPhotos(doc) {
   return {
+    ...doc,
     CreateDate: doc.CreateDate,
     SourceHttp: doc.SourceFile.replace(ImagesPath, ImagesHost),
     ThumbHttp: doc.ThumbFile.replace(ImagesPath, ImagesHost),
