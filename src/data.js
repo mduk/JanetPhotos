@@ -1,7 +1,7 @@
-export const DatabaseHost = 'http://127.0.0.1:5984';
-export const ApplicationHost = 'http://127.0.0.1:3000';
-export const ImagesHost = 'http://127.0.0.1:82';
-export const ImagesPath = '/home/daniel/Camera';
+export const DatabaseHost = 'http://janet.local:5984';
+export const ApplicationHost = 'http://janet.local:3000';
+export const ImagesHost = 'http://janet.local:82';
+export const ImagesPath = '/mnt/ARCHIVE/Photos/Camera';
 
 export const Years = [
   2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020

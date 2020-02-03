@@ -11,8 +11,7 @@ import ThumbnailCard from '../components/thumbnailcard';
 
 export default function(props) {
   const { match: { params: { year, month } } } = props;
-  const [ photos, setPhotos ] = useState([]);
-  const [ reqres, setReqres ] = useState(undefined);
+  const [ days, setDays ] = useState([]);
 
   const fromDate = [parseInt(year), MonthOrdinals[month], 0];
   const   toDate = [parseInt(year), MonthOrdinals[month], 32];
@@ -20,21 +19,17 @@ export default function(props) {
   useEffect(() => {
     async function getData() {
       const dburl = `${DatabaseHost}/camera/_design/byYearMonth/_view/by-create-date`;
-      const request = {
+      const response = await axios({
         method: 'get',
         url: dburl,
         params: {
-          include_docs: true,
-          startkey: JSON.stringify(fromDate),
-          endkey: JSON.stringify(toDate)
+          start_key: JSON.stringify(fromDate),
+          end_key: JSON.stringify(toDate)
         }
-      };
-      const response = await axios(request);
-      setReqres({request, response});
-
-      setPhotos(groupPhotosByDay(
+      });
+      setDays(groupPhotosByDay(
         response.data.rows
-          .map(r => r.doc)
+          .map(r => r.value)
           .map(transformPhotos)
       ));
     }
@@ -45,15 +40,15 @@ export default function(props) {
 
   let content;
 
-  if (photos.length > 0) {
-    content = photos.map(([date, photos]) => {
+  if (days.length > 0) {
+    content = days.map(({ date, count, photos }) => {
       const thumbnails = photos.map(photo => (
-        <ThumbnailCard photo={photo} tags={Tags}/>
+        <ThumbnailCard photo={photo}/>
       ));
 
       return (
         <div className='month'>
-          <h1>{date}</h1>
+          <h1>{date} ({count})</h1>
           <Card.Group>{thumbnails}</Card.Group>
           <Divider/>
         </div>
@@ -64,12 +59,14 @@ export default function(props) {
     content = <p>Nothing to display</p>;
   }
 
+  const month_photos = days.reduce((acc, d) => acc += d.count, 0);
+
   return (
     <Container fluid>
+      <h1>There are {month_photos} photos in {month} {year}</h1>
       {content}
       <pre>
-this:
-{JSON.stringify({ year, month, ...reqres }, null, 2)}</pre>
+{JSON.stringify({ year, month, days }, null, 2)}</pre>
     </Container>
   );
 }

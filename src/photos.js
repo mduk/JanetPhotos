@@ -5,20 +5,27 @@ import {
 
 export function transformPhotos(doc) {
   return {
-    ...doc,
-    SourceHttp: (doc.SourceFile) ? doc.SourceFile.replace(ImagesPath, ImagesHost) : '',
-    ThumbHttp: (doc.ThumbFile) ? doc.ThumbFile.replace(ImagesPath, ImagesHost) : '',
+    CreateDate: doc.CreateDate,
+    SourceHttp: doc.SourceFile.replace(ImagesPath, ImagesHost),
+    ThumbHttp: doc.ThumbFile.replace(ImagesPath, ImagesHost),
   };
 }
 
 export function groupPhotosByDay(photos) {
-  return Object.entries(photos.reduce((acc, photo) => {
+  return Object.values(photos.reduce((acc, photo) => {
     let [ year, month, day, ...tail ] = photo.CreateDate.split(/:| |\+/)
     let date = `${year}-${month}-${day}`;
+
     if (!(date in acc)) {
-      acc[date] = [];
+      acc[date] = {
+        date,
+        count: 0,
+        photos: [],
+      };
     }
-    acc[date].push(photo);
+
+    acc[date].photos.push(photo);
+    acc[date].count++;
     return acc;
   }, {}));
 }
