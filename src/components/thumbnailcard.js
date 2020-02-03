@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu, Card, Image, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-export default function({ photo, tags }) {
+export default function({ photo }) {
   function onClickThumbnail(photo) {
     console.log("thumbnail click", photo);
   };

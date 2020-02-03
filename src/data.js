@@ -26,12 +26,3 @@ export const MonthOrdinals = {
   November: 11,
   December: 12
 };
-
-export const Tags = [
-  { text: 'Lai Lai', slug: 'lai-lai' },
-  { text: 'Dougie', slug: 'dougie' },
-  { text: 'Jazzmin', slug: 'jazzmin' },
-  { text: 'Twinkle', slug: 'twinkle' },
-  { text: 'Thomas', slug: 'thomas' },
-  { text: 'Monty', slug: 'monty' }
-];
