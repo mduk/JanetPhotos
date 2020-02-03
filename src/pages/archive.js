@@ -5,23 +5,22 @@ import axios from 'axios';
 
 import { Container, Card, Divider } from 'semantic-ui-react';
 
-import { Tags, MonthOrdinals } from '../data';
+import { DatabaseHost, Tags, MonthOrdinals } from '../data';
 import { transformPhotos, groupPhotosByDay } from '../photos';
 import ThumbnailCard from '../components/thumbnailcard';
-
-const db = 'http://localhost:5984';
 
 export default function(props) {
   const { match: { params: { year, month } } } = props;
   const [ photos, setPhotos ] = useState([]);
+  const [ reqres, setReqres ] = useState(undefined);
 
   const fromDate = [parseInt(year), MonthOrdinals[month], 0];
   const   toDate = [parseInt(year), MonthOrdinals[month], 32];
 
   useEffect(() => {
     async function getData() {
-      const dburl = `${db}/camera/_design/byYearMonth/_view/by-create-date`;
-      const response = await axios({
+      const dburl = `${DatabaseHost}/camera/_design/byYearMonth/_view/by-create-date`;
+      const request = {
         method: 'get',
         url: dburl,
         params: {
@@ -29,7 +28,9 @@ export default function(props) {
           startkey: JSON.stringify(fromDate),
           endkey: JSON.stringify(toDate)
         }
-      });
+      };
+      const response = await axios(request);
+      setReqres({request, response});
 
       setPhotos(groupPhotosByDay(
         response.data.rows
@@ -68,7 +69,7 @@ export default function(props) {
       {content}
       <pre>
 this:
-{JSON.stringify({ year, month, photos }, null, 2)}</pre>
+{JSON.stringify({ year, month, ...reqres }, null, 2)}</pre>
     </Container>
   );
 }
