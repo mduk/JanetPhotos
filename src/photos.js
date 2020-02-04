@@ -8,7 +8,8 @@ export function transformPhotos(doc) {
     ...doc,
     CreateDate: doc.CreateDate,
     SourceHttp: doc.SourceFile.replace(ImagesPath, ImagesHost),
-    ThumbHttp: doc.ThumbFile.replace(ImagesPath, ImagesHost),
+    ThumbHttp: ('ThumbFile' in doc) ? doc.ThumbFile.replace(ImagesPath, ImagesHost)
+                                    : doc.SourceFile.replace(ImagesPath, ImagesHost),
   };
 }
 

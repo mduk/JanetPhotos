@@ -27,6 +27,7 @@ export default function(props) {
       const grouped = {};
       for (let i in rows) {
         const { key, value } = rows[i];
+
         let [ year, month ] = key;
         year = parseInt(year);
         month = parseInt(month);
@@ -35,7 +36,7 @@ export default function(props) {
           grouped[year] = {};
         }
 
-        grouped[year][Months[month--]] = value;
+        grouped[year][Months[month]] = value;
       }
 
       setDates(grouped);
@@ -72,7 +73,7 @@ export default function(props) {
     <Menu>
       <Menu.Item header>Janet Photos</Menu.Item>
 
-      <Dropdown item text='Archive'>
+      <Dropdown item text='By Year'>
         <Dropdown.Menu>{year_items}</Dropdown.Menu>
       </Dropdown>
 

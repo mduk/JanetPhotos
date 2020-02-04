@@ -13,7 +13,9 @@ export default function(props) {
   const { match: { params: { year, month } } } = props;
   const [ days, setDays ] = useState([]);
 
-  const fromDate = [parseInt(year), MonthOrdinals[month]];
+  const month_ordinal = MonthOrdinals[month];
+
+  const fromDate = [parseInt(year), month_ordinal];
 
   useEffect(() => {
     async function getData() {
@@ -40,7 +42,6 @@ export default function(props) {
   ]);
 
   let content;
-  console.log(days);
 
   if (days.length > 0) {
     content = days.map(({ date, count, photos }) => {
@@ -68,7 +69,7 @@ export default function(props) {
       <h1>There are {month_photos} photos in {month} {year}</h1>
       {content}
       <pre>
-{JSON.stringify({ year, month, days }, null, 2)}</pre>
+{JSON.stringify({ year, month, month_ordinal, days }, null, 2)}</pre>
     </Container>
   );
 }
