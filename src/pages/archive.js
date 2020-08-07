@@ -38,7 +38,7 @@ export default function(props) {
     }
     getData();
   }, [
-    year, month
+    fromDate, year, month
   ]);
 
   let content;

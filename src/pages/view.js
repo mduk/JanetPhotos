@@ -6,12 +6,13 @@ import { Table } from 'semantic-ui-react';
 import axios from 'axios';
 
 import { DatabaseHost } from '../data';
-import { transformPhotos, groupPhotosByDay } from '../photos';
+import { transformPhotos } from '../photos';
 
 export default function() {
   const { id } = useParams();
 
   const [ photo, setPhoto ] = useState(null);
+
   useEffect(() => {
     async function getPhoto() {
       const request = {

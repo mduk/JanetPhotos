@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Menu, Dropdown } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 import { DatabaseHost, Months } from '../data';
@@ -45,7 +45,6 @@ export default function(props) {
     const year_menus  = Object.keys(dates).map(year => {
 
       const month_items = Object.keys(dates[year]).map(month => {
-        const photos_in_month = dates[year][month];
         return (
           <Menu.Item
             as={Link}
